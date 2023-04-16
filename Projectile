@@ -1,0 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Projectile : MonoBehaviour
+{
+    public float speed = 4f;
+    //public Vector2 targetPosition;
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Obstacle")
+        {
+            //Obstacle obstacle = collision.GetComponent<Obstacle>();
+            Destroy(collision.gameObject);
+            Destroy(this.gameObject);
+        }
+    }
+    void Update()
+    {
+        transform.position = (Vector2)transform.position + Vector2.up * speed * Time.deltaTime;
+    }
+    void Start()
+    {
+        //transform.position = targetPosition;
+        Destroy(gameObject, 5f);
+    }
+}
