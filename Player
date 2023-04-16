@@ -5,10 +5,30 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int points;
+    public Projectile projectilePrefab;
+    private bool isShoot = false;
+    public float shootInterval;
+    public float shootTimer;
 
     void Update()
     {
         Move();
+        if (Input.GetButtonDown("Fire1"))
+        {
+       
+            isShoot = true;
+
+        }
+        if (Input.GetButtonUp("Fire1"))
+        {
+            isShoot = false;
+
+        }
+        if (isShoot)
+        {
+            Shoot();
+        }
+        shootTimer -= Time.deltaTime;
     }
 
     void Move()
@@ -19,5 +39,18 @@ public class Player : MonoBehaviour
             Vector2 realPos = Camera.main.ScreenToWorldPoint(mousePos);
             transform.position = realPos;
         }
+    }
+
+    void Shoot()
+    {
+        if(shootTimer <= 0)
+        {
+            Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            shootTimer = shootInterval;
+        }
+        
+        
+        
+        //yield return new WaitForSeconds(3);
     }
 }
