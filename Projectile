@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float speed = 4f;
+    public GameObject pickupEffect;
     //public Vector2 targetPosition;
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -13,11 +14,13 @@ public class Projectile : MonoBehaviour
             //Obstacle obstacle = collision.GetComponent<Obstacle>();
             Destroy(collision.gameObject);
             Destroy(this.gameObject);
+            GameObject effect = Instantiate(pickupEffect, transform.position, transform.rotation);
+            Destroy(effect, 5);
         }
     }
     void Update()
     {
-        transform.position = (Vector2)transform.position + Vector2.up * speed * Time.deltaTime;
+        transform.position = (Vector2)transform.position + Vector2.up * (speed + GameController.gameSpeed) * Time.deltaTime;
     }
     void Start()
     {
@@ -25,3 +28,4 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject, 5f);
     }
 }
+
