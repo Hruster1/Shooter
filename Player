@@ -10,12 +10,33 @@ public class Player : MonoBehaviour
     public float shootInterval;
     public float shootTimer;
 
-    void Update()
+    private Vector3 TPosition;
+
+    public float speed;
+
+    bool isMoving = false;
+
+    private void Start()
     {
+        Application.targetFrameRate = 120;
+    }
+    private void Update()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            PositionTrigger();
+        }
+
+        if (isMoving)
+        {
+            ItsMove();
+        }
+
+        shootInterval -= GameController.gameSpeed * Time.deltaTime / 400;
         Move();
         if (Input.GetButtonDown("Fire1"))
         {
-       
+
             isShoot = true;
 
         }
@@ -31,14 +52,33 @@ public class Player : MonoBehaviour
         shootTimer -= Time.deltaTime;
     }
 
+    void PositionTrigger()
+    {
+        TPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        TPosition.z = transform.position.z;
+
+        isMoving = true;
+    }
+
+    void ItsMove()
+    {
+        //transform.rotation = Quaternion.LookRotation(Vector3.forward, TPosition);
+        transform.position = Vector3.MoveTowards(transform.position, TPosition, speed * Time.deltaTime);
+
+        if (transform.position == TPosition)
+        {
+            isMoving = false;
+        }
+    }
+
     void Move()
     {
-        if (Input.GetMouseButton(0))
-        {
-            Vector2 mousePos = Input.mousePosition;
-            Vector2 realPos = Camera.main.ScreenToWorldPoint(mousePos);
-            transform.position = realPos;
-        }
+        //if (Input.GetMouseButton(0))
+        //{
+            // mousePos = Input.mousePosition;
+           // Vector2 realPos = Camera.main.ScreenToWorldPoint(mousePos);
+           // transform.position = realPos;
+        //}
     }
 
     void Shoot()
