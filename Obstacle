@@ -4,11 +4,37 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+    public GameObject pickupEffect;
+
+    public float Min = 0.7f;
+    public float Max = 0.15f;
+
+    public float rotationMin = 180f;
+    public float rotationMax = 0f;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player")
         {
+            GameObject effect = Instantiate(pickupEffect, transform.position, transform.rotation);
+            Destroy(effect, 5);
             Destroy(gameObject);
+            Destroy(collision.gameObject);
         }
+    }
+    public void Start()
+    {
+        RandomScale();
+        RandomRotation();
+    }
+    private void RandomScale()
+    {
+        float Factor = Random.Range(Min, Max);
+        transform.localScale = (Vector2)transform.localScale * Factor;
+    }
+    private void RandomRotation()
+    {
+        float rotationFactor = Random.Range(rotationMin, rotationMax);
+        transform.localEulerAngles = Vector3.forward * rotationFactor;
     }
 }
